@@ -8,47 +8,163 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var numberOfDice: Int = 1
+    @State var numOfPlayers: Int = 2
+    @State var playerScore: [Int] = []
     
+    @State var numberOfDice1: Int = 1
+    @State var numberOfDice2: Int = 1
+    @State var turn: Int = 0
+    @State var Winner: Bool = false
+    @State var start: Bool = false
     var body: some View {
-        VStack {
-            Text("Dice Roller")
-                .font(.largeTitle.lowercaseSmallCaps())
-                .foregroundStyle(.white)
-            HStack {
-                ForEach(1...numberOfDice, id: \.description) { _ in
-                    DiceView()
+        NavigationStack {
+            NavigationLink(
+                destination: GameView(numberOfDice1: $numberOfDice1, numberOfDice2: $numberOfDice2, turn: $turn, Winner: $Winner, playerScore: $playerScore, numOfPlayers: $numOfPlayers).navigationBarBackButtonHidden(true),isActive: $start
+
+                
+            ) {
+                EmptyView()
+            }
+            .hidden()
+        ZStack{
+            
+                
+                
+                NavigationLink(destination: InfoView().navigationBarBackButtonHidden(true))
+            {
+                    Image(systemName: "info.circle")
+                        
+                        .font(.system(size: 60))
+                        .fontDesign(.monospaced)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(.white)
+                        .padding(20)
+                        
+                }
+            
+                .offset(x:350,y:-500)
+                
+                
+                
+                
+                
+                VStack{
+                    Text("SKUNK!")
+                        .font(.system(size: 150))
+                        .fontDesign(.monospaced)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(.white)
+                        .padding(20)
+                    Spacer()
+                    Text("This will be a \(numOfPlayers) Player Skunk Game")
+                        .font(.system(size: 50))
+                        .fontDesign(.monospaced)
+                        .fontWeight(.heavy)
+                        .foregroundStyle(.white)
+                        .multilineTextAlignment(.center)
+                    
+                    Spacer()
+                    
+                    VStack {
+                        Text("Players?")
+                            .font(.system(size: 75))
+                            .fontDesign(.monospaced)
+                            .fontWeight(.heavy)
+                            .foregroundStyle(.white)
+                            .padding(5)
+                        HStack{
+                            Button{
+                                numOfPlayers = 2
+                            }
+                            label:{
+                                Rectangle()
+                                    .fill(.twopYellow)
+                                    .frame(width: 250, height: 300)
+                                    .overlay{
+                                        Text("2P")
+                                            .font(.system(size: 150))
+                                            .fontDesign(.monospaced)
+                                            .fontWeight(.heavy)
+                                            .foregroundStyle(.white)
+                                        
+                                    }
+                            }
+                            
+                            Button{
+                                numOfPlayers = 3
+                            }
+                            label:{
+                                Rectangle()
+                                    .fill(.threepOrange)
+                                    .frame(width: 250, height: 300)
+                                    .overlay{
+                                        Text("3P")
+                                            .font(.system(size: 150))
+                                            .fontDesign(.monospaced)
+                                            .fontWeight(.heavy)
+                                            .foregroundStyle(.white)
+                                        
+                                    }
+                            }
+                            
+                            Button{
+                                numOfPlayers = 4
+                            }
+                            label:{
+                                Rectangle()
+                                    .fill(.fourpRed)
+                                    .frame(width: 250, height: 300)
+                                    .overlay{
+                                        Text("4P")
+                                            .font(.system(size: 150))
+                                            .fontDesign(.monospaced)
+                                            .fontWeight(.heavy)
+                                            .foregroundStyle(.white)
+                                        
+                                    }
+                            }
+                        }
+                        
+                    }
+                    .padding(15)
+                    
+                    .background( Color.black.opacity(0.45) )
+                    
+                    Spacer()
+                    Button("Start Game") {
+                        for _ in 0..<numOfPlayers {
+                            playerScore.append(0)
+                            
+                        }
+                        start = true
+                    }
+                    .font(.system(size: 80))
+                    .fontDesign(.monospaced)
+                    .fontWeight(.heavy)
+                    .foregroundStyle(.white)
+                    .tint(.green)
+                    .buttonStyle(.borderedProminent)
+                    
+
+                    Spacer()
+                    
+                    
                 }
                 
-            }
-            .padding()
-            
-            HStack {
-                Button("Remove Dice",systemImage: "minus.circle.fill") {
-                    withAnimation{
-                        numberOfDice -= 1
-                    }
-                }
-                .disabled(numberOfDice == 1)
                 
-                Button("Add Dice", systemImage: "plus.circle.fill") {
-                    withAnimation{
-                        numberOfDice += 1
-                    }
-                }
-                .disabled(numberOfDice == 5)
             }
-            .padding()
-            .labelStyle(.iconOnly)
-            .font(.title)
-            
-        }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.appBackground)
+        .background(.mainMenuCyan)
         .tint(.white)
+        }
+        
+        .toolbarBackground(.hidden, for: .navigationBar)
+        
     }
+    
 }
 #Preview {
     ContentView()
 }
+
